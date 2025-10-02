@@ -1,0 +1,38 @@
+openapi: 3.0.4
+info:
+  title: Blog API
+  version: 1.0.0
+x-context: Blog
+components:
+  schemas:
+    User:
+      type: object
+      required: [name, email]
+      properties:
+        name: {type: string}
+        email: {type: string}
+        posts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Post"
+    Post:
+      type: object
+      required: [title, content]
+      properties:
+        title: {type: string}
+        content: {type: string}
+        user:
+          $ref: "#/components/schemas/User"
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
+          x-relation: many-to-many
+          x-join-schema: PostsTag
+          x-join-fields:
+            extra_note: {type: string}
+    Tag:
+      type: object
+      required: [name]
+      properties:
+        name: {type: string}
